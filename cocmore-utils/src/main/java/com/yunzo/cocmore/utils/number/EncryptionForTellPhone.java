@@ -147,7 +147,7 @@ public class EncryptionForTellPhone {
 //			System.out.println("程序运行时间： "+(endTime-startTime)+"ms");  
 			
 			System.out.println(decryptByABC("59444a4942414a42494a444243"));
-			System.out.println(encryptToABC("18780098721"));
+			System.out.println(encryptToABC("18720083010"));
 		}
 		
 		public static void doSomeThing()
