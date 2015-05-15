@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html lang="en" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <title>云筑圈 上墙</title>
+	<link rel="stylesheet" media="only screen and (min-width: 320px)" href="../static/shangqiang/css/css320.css"/>
+	<link rel="stylesheet" media="only screen and (min-width: 480px)" href="../static/shangqiang/css/css480.css"/>
+	<link rel="stylesheet" media="only screen and (min-width: 767px)" href="../static/shangqiang/css/css767.css"/>
+	<link rel="stylesheet" media="only screen and (min-width: 960px)" href="../static/shangqiang/css/css960.css"/>
+	<script type="application/javascript" src="../static/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/jquery/slider.js" defer></script>
+	<script>
+		String.prototype.len = function ()           
+		{
+		    return this.replace(/[^\x00-\xff]/g, "xx").length;
+		}
+		
+		function hiddeflow(str, count,type) {
+		    var a = str;
+		    if(type!="name") {
+		        var width = $(window).width();
+		        if (width < 420) {
+		            count = count - 15;
+		        }
+		    }
+		    if (a.len() >= count * 2) {
+		        console.log(a.len());
+		        str = a.substring(0, count);
+		        str += "....";
+		    }
+		    return str;
+		}
+		
+		var Msstime = "";
+		var title = "";
+		var li = "";
+		var text = "";
+		var state = "0";
+		var index =0;
+		var firstload = true;
+		var businessId = "";
+		var ajaxstate2;
+		var Refreshajsx;
+		var innercontext;
+		var paraString;
+	</script>
+</head>
+<body>
+
+<div class="head">
+    <div class="h_center">
+        <div class="left" id="click">
+            <div class="logo"><img src="../static/shangqiang/images/yunzo.png" alt="" class="img_1"/></div>
+            <div class="logo_3"><img src="../static/shangqiang/images/logo.png" alt="" class="img_1"/></div>
+            <div class="logo_2"><img src="../static/shangqiang/images/2014.png" alt="" class="img_1"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="right">
+            <div id="demo01" class="flexslider">
+                <ul class="slides" id="slide"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="clear"></div>
+<div id="demo02" class="flexslider">
+    <ul class="slides" id="slide">
+        <li id="ydy">
+            <div class="img">
+                <div class="centent">
+                    <div class="ydy"><img src="../static/shangqiang/images/ydy.png"></div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="img">
+                <div class="centent">
+                    <div class="c_title_bg"></div>
+                    <p class="c_title" id="c_title" name="c_title"></p>
+                    <div class="centent_c">
+                        <div id="centent" class="centent"><div class="magin" style="display:none"><div class="mess"><div class="c_left"><div class="f_l"><div class="icon"><i>undefined</i><img src="../static/shangqiang/images/avatar_bg.png" class="icon_img" /></div><p>李跃</p></div><div class="line"></div> </div><div class="c_right"><div class="lip_l"><img src="../static/shangqiang/images/lip.png"  class="img_1"/></div><div class="text">测试测试测试</div> <div class="lip_r"><p></p><img src="../static/shangqiang/images/lip2.png"  class="img_1"/></div></div></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="foot"></div>
+</body>
+<script  type="text/javascript">
+
+    if (window.innerWidth)
+        var winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+        winWidth = document.body.clientWidth;
+    if (winWidth <= 480) {
+        $("#ydy").remove();
+    }
+
+    $(window).load(function () {
+        $(function () {
+            //获取上墙广告信息
+            var url = location.href;  
+            paraString = url.indexOf("=");
+            if(paraString != -1){
+            	paraString = url.substring(url.indexOf("=")+1,url.length);
+                $.ajax({
+                    type: "post",
+                    url: getPath()+"sadvertising/findWallAdHql",
+                    data:{activityId:paraString},
+                    async: false,
+                    cache:false,
+                    dataType: "json",
+                    success: function (data) {
+                        if(data && data.success){
+                            var json = data.obj;
+                            if(json.length>0){
+                            	var li="";
+            	                //添加广告
+                                for (var i = 0; i < json.length; i++) {
+                                	if(json[i].fimage && json[i].fimage.length>1)
+                                    	li += "<li><div class=\"img\"><img src='" + json[i].fimage.substr(0,json[i].fimage.length-1) + "'class='img_1' /></div></li>";
+                                }
+            	                $("#slide").html(li);
+                            }                
+            	            ajaxstate();//读取活动状态
+                        }else{
+                        	alert("查询数据出错");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    }
+                });
+            }else{
+            	
+            }
+        });
+        $('#demo01').flexslider({
+            animation: "slide",
+            direction: "horizontal",
+            easing: "swing"
+        });
+        $('#demo02').flexslider({
+            animation: "slide",
+            direction: "vertical",
+            animationSpeed: 5000,
+            slideshowSpeed: 1000,
+            slider_num: false,
+            slideshow: false,
+            easing: "swing",
+            animationLoop: false,
+            before: function () {
+
+            }
+        });
+    });
+
+
+    function insertmessage(aOlist) {
+    	var member = aOlist[index].ybasicMember;
+        var text2 = aOlist[index].fcontent;
+        var name = member.fname;
+        var memberNameImage = member.fheadImage;
+        var text = "";
+        text += "<div class=\"magin\" style=\"display:none\">";
+        text += "<div class=\"mess\">";
+        text += "<div class=\"c_left\">";
+        if(memberNameImage && memberNameImage.length>1){
+            text += "<div class=\"f_l\"><div class=\"icon\"><i>"+aOlist[index].sort+"</i><img src=\"" + memberNameImage.substr(0,memberNameImage.length-1) + "\" class=\"icon_img\" /></div><p>" + hiddeflow(name, 4,"name") + "</p>";
+        }else{
+            text += "<div class=\"f_l\"><div class=\"icon\"><i>"+aOlist[index].sort+"</i><img src=\"../static/shangqiang/images/avatar_bg.png\" class=\"icon_img\" /></div><p>" + hiddeflow(name, 4,"name") + "</p>";
+        }
+        text += "</div><div class=\"line\"></div>"
+        text += " </div>";
+        text += "<div class=\"c_right\">";
+        text += "<div class=\"lip_l\"><img src=\"../static/shangqiang/images/lip.png\"  class=\"img_1\"/></div>";
+        text += "<div class=\"text\">" + hiddeflow(text2, 60) + "</div>";
+
+        text += " <div class=\"lip_r\"><p></p><img src=\"../static/shangqiang/images/lip2.png\"  class=\"img_1\"/></div>";
+        text += "</div>";
+        text += "</div>";
+        text += "</div>";
+        if($(".magin").length>0){
+            $(".magin:first").before(text);
+            $(".magin:first").fadeIn(2000);
+            $(".magin:gt(2)").fadeOut(2000);
+            $(".magin:gt(2)").remove();
+        }
+        else{
+            $("#centent").html(text);
+            $(".magin:first").fadeIn(2000);
+        }
+
+        if(index==aOlist.length-1||aOlist.length<=1){
+            clearInterval(innercontext);
+            index=0;
+            return;
+        }
+        index++;
+    }
+
+    $(document).ready(function () {
+        var slideshow = false;
+
+        $("#slide").html(li);
+        $("#c_title").html(title);
+        
+        $(".text").each(function () {
+            var a = $(this).text();
+            if (a.len() >= 120) {
+                var s = a.substring(0, 60);
+                s += "....";
+                $(this).text(s);
+            }
+        });
+        $("#click").click(function () {
+            $(".flex-next").click();
+        });
+
+    });
+
+  	//获取项目路径
+	function getPath(){
+		var curWwwPath=document.location.href;
+	    var pathName=document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName+'/');
+	}
+	if (window.PIE) {
+	    $('.rounded').each(function() {
+	        PIE.attach(this);
+	    });
+	}
+		
+
+
+//更新活动状态
+function ajaxstate() {            
+    var a = $.ajax({
+        type: "post",
+        url: getPath()+"wallActivity/findWallActivityId",
+        data:{id:paraString},
+        dataType: "json",
+        cache:false,
+        success: function (data) {
+        	if (data && data.success && data.obj) {
+	            var json = data.obj;
+	            state = json.fstate;
+	            $("#c_title").html(json.ftheme);
+	            //活动状态为启动
+	            if (state == "14") {
+	                if(firstload){
+	                    clearInterval(Refreshajsx);
+	                    $('#click').trigger("click");
+	                    ajaxcontext();
+	                    ajaxstate2 = setInterval("ajaxstate()", 5000);
+	                    Refreshajsx = setInterval("ajaxcontext()", 30000);
+	                }
+	                firstload =false;
+	            }
+	            //活动状态为关闭
+	            if (state == "13") {
+	                clearInterval(Refreshajsx);
+	                clearInterval(ajaxstate2);
+	                var width =$(window).width();
+	                if (width < 780) {
+	                   window.location.href = getPath()+"webApp/choujiang_end.html";
+	                }else{
+	                	//判断此次活动是否设置奖项
+	                	$.ajax({
+	                        type: "post",
+	                        url: getPath()+"wallActivity/getAllWinAndJoinWallActivitypeople",
+	                        data:{ztid:paraString},
+	                        async: false,
+	                        cache:false,
+	                        dataType: "json",
+	                        success: function (data) {
+	                            if(data && data.success){
+	                            	if(data.winSetting && data.winSetting.length>0){
+	            	                	//动态获取当前活动中奖人员名单
+	                                	$.ajax({
+	                                        type: "post",
+	                                        url: getPath()+"record/findRecordThemeId",
+	                                        data:{themeId:paraString},
+	                                        async: false,
+	                                        cache:false,
+	                                        dataType: "json",
+	                                        success: function (result) {
+	                                            if(result && result.success){
+	                                            	window.location.href = getPath()+"webApp/choujiang_end.html";
+	                                            }else
+	                                            	window.location.href = getPath()+"webApp/choujiang_start.html?activityThemeID=" + paraString;
+	                                            return;
+	                                        }
+	                                    });
+	                            	}
+	                            }else{
+	                            	window.location.href = getPath()+"webApp/choujiang_end.html";return;
+	                            }
+	                        },error: function (XMLHttpRequest, textStatus, errorThrown) {
+	                        	window.location.href = getPath()+"webApp/choujiang_end.html";
+	                        }
+                        });
+	                    
+	               }
+	            }
+            }else{
+                //alert("数据读取异常");
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+        }
+    });
+
+}
+
+//定时获取上墙回复信息
+function ajaxcontext() {
+	$.ajax({
+            type: "post",
+            url: getPath()+"wallReply/findReplyTime",
+           	data:{replyTime:Msstime,activityId:paraString},
+            dataType: "json",
+            ifModified: false,
+            cache:false,
+            success: function (data) {
+                if (data && data.success) {
+                    var aOlist = data.obj;
+
+                	if(aOlist.length>0){
+	                    innercontext = setInterval(function(){
+	                        insertmessage(aOlist);
+	                    },5000);
+	                    Msstime = aOlist[aOlist.length-1].freplyTime;
+                    }
+                }else{
+                	//alert("数据读取异常");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            }
+       });
+}
+</script>
+</html>

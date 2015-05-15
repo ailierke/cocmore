@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0" metadata-complete="false">
+
+
+	<!-- classpath:在war包中直接就是WEB-INF/classes/目录 而对于war包引用的jar包，是没有WEB-INF/classes这样的目录
+				 所以其实对于引用的jar包"/"就是所谓的WEB-INF、classes 
+				 	所以war设置的时候对于eclipse直接就设置导出到java/main/resorces和java 到WEB-INF/classes
+				   jar设置的时候对于eclipse直接就设置导出到java/main/resorces、java 到 / -->
+					
+	<!-- 配置log4j -->
+ 	<context-param>
+    	        <param-name>log4jConfigLocation</param-name>
+    	        <param-value>/WEB-INF/classes/config/properties/applicationContext-log4j.properties</param-value>
+  	</context-param>  
+  	<context-param>
+    	        <param-name>log4jRefreshInterval</param-name>
+    	        <param-value>6000</param-value>
+  	</context-param>
+	<listener>
+               <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  	</listener>		
+  		
+	<!-- 配置字符集 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<!--假如说过滤器就像上面那样被配置到web.xml了，当请求被提交之后， 过滤器会判断request.getCharacterEncoding()是否为null， 
+				如果是null那么就会进行request.setCharacterEncoding("UTF-8")的操作， 如果不是null那么过滤器什么也不会做。 -->
+			<param-name>forceEncoding</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置spring控制hibernate的懒加载策略所出现的no session问题 -->
+	<filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+		<!-- singleSession默认为true,若设为false则等于没用OpenSessionInView -->
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- spring监听配置文件 classpath:是指 WEB-INF文件夹下的classes目录 classpath*:包含到lib classpath：只会到你的class路径中查找找文件; 
+		classpath*：不仅包含class路径，还包括jar文件中(class路径)进行查找. -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:config/**/applicationContext-*.xml</param-value>
+	</context-param>
+
+	<!-- Bootstrap the root application context as usual using ContextLoaderListener -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Declare a Spring MVC DispatcherServlet as usual -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- mvc配置文件地址 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:config/context/applicationContext-MvcConfig.xml</param-value>
+		</init-param>
+	</servlet>
+	<!-- 配置拦截 -->
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+		<!-- 图片验证码 -->
+	<servlet>
+		<servlet-name>PictureCheckCode</servlet-name>
+		<servlet-class>com.yunzo.cocmore.core.function.servlet.PictureCheckCode</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PictureCheckCode</servlet-name>
+		<url-pattern>/PictureCheckCode</url-pattern>
+	</servlet-mapping>
+
+
+
+	<!-- session超时 -->
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	<!-- 欢迎页面 -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+</web-app>

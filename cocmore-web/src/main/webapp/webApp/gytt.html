@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-关于团体</title>
+	<link href="../static/webApp/gytt.css" type="text/css" rel="stylesheet"/>
+	
+</head>
+<body>
+			<!-- <h1>团体信息</h1> -->
+			<div class="ttxx_center hide">
+					<!-- 团体信息 logo  名称 -->
+					<div class="ttxx">
+						<!-- <img src=""/><span>某团体</span> -->
+					</div>
+					<!-- 团体关于我们信息 -->
+					<h2>关于团体</h2>
+					<div class="containerCenter">
+								<!-- <div class="cc_center">
+									<span class="cc_centerLeft">
+										<h2 class="cc_centerTitle">44</h2>
+									</span>
+									<p class="cc_centerRight"></p>
+								</div>
+								<div class="cc_centerContext" style="display: none;">
+										<div class="item1_content">
+											<div class="cc_itemInfo">
+												<p class="cc_itemInfoDesc"> 测试</p>
+											</div>
+										</div>
+								</div> -->  
+					</div>
+					<!-- 团体联系我们 -->
+					<h2>联系团体</h2>
+					<div class="contect"><!-- 
+							<p>电话:</p>
+							<p>地址:</p>
+							<p>邮箱:</p>
+							<p>网址:</p> -->
+					</div>
+			</div>
+			<div class="xx_loader"></div>
+</body>
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+	<script type="text/javascript">
+	//alert(document.body.scrollWidth);
+	//获取项目路径
+	function getPath(){
+		var curWwwPath=document.location.href;
+	    var pathName=document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName+'/');
+	}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		} 
+		var url = location.href;  
+    	var paraString = url.indexOf("=");
+		if(paraString != -1){
+			var paraString = url.substring(url.indexOf("=")+1,url.length);
+			$.ajax({
+				type: "POST",// 指定是post还是get,当然此处要提交,当然就要用post了   
+		         url: getPath()+"groups/getByGroupId",  //发送请求的地址。   
+		         data: "businessId="+paraString,//发送到服务器的数据   
+		         dataType: "json",//返回纯文本字符串 timeout:20000,// 设置请求超时时间（毫秒）。   
+		         error: function () {//请求失败时调用函数。  
+		        	 
+		         }, 
+		         success://请求成功后回调函数。  
+		        	 function(data) {
+			        	 if( data.group){
+			        	 	var ttName = data.group.name;
+			        	 	var ttLogo = data.group.logo;
+			        	 	var Logo =(ttLogo &&  ttLogo.length>1)?'<img src="'+ttLogo.substr(0,ttLogo.length-1)+'"/>':"";
+							
+		        	 		$(".ttxx").html(Logo+'<h2>'+ttName+'</h2>');
+		        	 		
+			        	 	var ttLxwm = data.groupscontact;
+			        	 	if(data.groupsabouts){
+				        	 	var ttAbout = data.groupsabouts;
+				        	 	var abo = "";
+				        	 		for(var i = 0;i<ttAbout.length;i++){
+				        	 			var about = ttAbout[i];
+				        	 			abo +='<div class="cc_center"><span class="cc_centerLeft"><label class="cc_centerTitle">'+about.title
+				        	 					+'</label></span><p class="cc_centerRight"></p></div><div class="cc_centerContext" style="display: none;">'
+				        	 					+'<div class="item1_content"><div class="cc_itemInfo"><p class="cc_itemInfoDesc"> '+about.content
+				        	 						+'</p></div></div></div><div style="clear:both"></div>';
+			        	 		}
+				        	 	$(".containerCenter").html(abo); 
+			        			$(document).ready(function(){
+			        			      $(".cc_center").click(function(){
+			        			          var next = $(this).next();
+			        			          var icon = $(this).children()[1];
+			        			          if(next.css("display")=="none"){
+			        			              $(this).next().slideDown(100);
+			        			              $(this).children(".cc_centerRight").addClass("select");
+			        			          }else{
+			        			              $(this).next().slideUp(100);
+			        			              $(this).children(".cc_centerRight").removeClass("select");
+			        			          }
+			        			      });
+			        			});
+		        	 		}
+			        	 	if(ttLxwm){
+								$(".contect").html('<p>电话:'+ttLxwm.tell+'</p><p>地址:'+ttLxwm.adress+'</p><p>邮箱:'+ttLxwm.mail+'</p><p>网址:'+ttLxwm.uri+'</p>');
+		        			}
+		           		}else{
+		        	 		$(".ttxx_center").html("不合法的请求!");
+		        	 	} 
+
+			     		$(".ttxx_center").removeClass('hide');
+			     		$(".xx_loader").addClass('hide');
+	        	 	} 
+	          }); 
+		}
+	</script>
+	<script type="text/javascript">
+		$(".nav").css({"margin-right": "106px"});
+		$('.top2').remove();
+	</script>
+</html>

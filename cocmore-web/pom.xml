@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.yunzo.cocmore</groupId>
+		<artifactId>cocmore</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<!-- <groupId>com.yunzo.cocmore</groupId> -->
+	<artifactId>cocmore-web</artifactId>
+	<!-- <version>0.0.1-SNAPSHOT</version> -->
+	<packaging>war</packaging>
+	<name>cocmore-web Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		<!-- 引用其他模块资源 -->
+		<dependency>
+			<groupId>com.yunzo.cocmore</groupId>
+			<artifactId>cocmore-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/test/resources</directory>
+				<!--线上为了便于修改配置，我们不希望将资源文件达到jar包中，这样无法修改。因此可以利用maven插件的机制将资源文件打到classes目录下打包时排除资源文件 -->
+				<excludes>
+					<exclude>*.*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<finalName>cocmore-web</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+
+				<version>2.6</version>
+				<configuration>
+					<warName>cocmore-web</warName>
+					 <!--将类文件打成jar包-->
+                      <archiveClasses>true</archiveClasses>
+					<!-- 将外部的第三方包不在maven下的引到lib下面,由于maven使用system范围，不会自动打包到lib下 这里是用显示定义，将需要的外部第三方包传过去  -->
+                     <!--将资源文件打到classes目录下-->
+					<webResources>
+						<resource>
+							<directory>libs/</directory>
+							<targetPath>WEB-INF/lib/</targetPath>
+							<filtering>false</filtering>
+							<includes>
+								<include>**/*.jar</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

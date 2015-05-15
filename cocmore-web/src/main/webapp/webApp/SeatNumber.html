@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-座位号</title>
+	<style type="text/css">
+		.state1{
+                color:#aaa;
+                font-size:14px;
+            }
+        .state2{
+            color:#000;
+        }
+        * {
+		    border: medium none;
+		    margin: 0;
+		    padding: 0;
+		    vertical-align: baseline;
+		    font-family: '微软雅黑 Regular', '微软雅黑';
+		    color:#fff;
+		}
+		body{background:url(../static/webApp/img/seatBg.jpg) no-repeat top center;}
+		h1{
+			width:100%;
+			text-align: center;
+			height: 30px;
+			font-family:'华文行楷';
+		}
+		.zz_center{
+			width:98%;
+			height:100%;
+			padding:1%;
+			text-align:center;
+			padding-top:190px;
+			background:url(../static/webApp/img/logo.png) no-repeat top;
+			line-height:40px;
+		}
+		.zz_center label{
+			line-height: 40px;
+    		margin-top: 10px;
+    		vertical-align: middle;
+		}
+		.tishi{color:red;font-size:14px;}
+		input[type='text']{
+			margin: 10px 5px;
+    		padding: 3px;
+    		width: 200px;
+			background:none;
+			padding:3px;
+			border:none;
+			border-bottom:1px solid #cdcdcd;
+		}
+		input[type='submit']{
+			position:absolute;
+			bottom:10px;
+			left:50%;
+			margin-left:-150px;
+			padding:10px;
+			width:300px;
+			background:none;
+			border:1px solid #fff;
+			border-radius:3px;
+			cursor: pointer;
+			letter-spacing: 10px;
+			font-weight:bold;
+			font-size:16px;
+		}
+		.zz_title{
+			font-family:"Microsoft YaHei","微软雅黑","SimSun","宋体";
+			font-size:20px;
+		}
+		.zz_title span{
+			float:right;
+		}
+	</style>
+</head>
+<body>
+	<div class="zz_center hide">
+		<header>
+			<hgroup>
+			<h1  class="zz_title"></h1>
+			</hgroup>
+		</header>
+		<form action="javascript:checkForm();" method="post" id="getSeat">
+			<p class="tishi"></p>
+			<label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input id="name"  type="text"  name="name"/><br/>
+			<label>团体名称：</label><input type="text" id="ttxx"  name="ttxx"/><br/>
+			<label>联系电话：</label><input   type="text" id="telphone"  name="telphone"/><br/>
+			<input type='submit' value="获取座位号"/>
+		</form>
+		<p class="zwh"></p>
+	</div>
+	<div class="xx_loader"></div>
+</body>
+
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+<script>
+//获取项目路径
+function getPath(){
+	var curWwwPath=document.location.href;
+    var pathName=document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    var localhostPaht=curWwwPath.substring(0,pos);
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht+projectName+'/');
+}
+var ok4 = false;
+$(function(){
+	//验证手机号
+	$('input[name="name"]').blur(function(){
+	    if($(this).val().trim()==""){
+	    	$(".tishi").text('请输入姓名');
+	    	 ok4=false;
+	    }else{                  
+	        ok4=true;
+	    } 
+	});
+	$('input[name="ttxx"]').blur(function(){
+	    if($(this).val().trim()==""){
+	    	$(".tishi").text('请输入团体名称');
+	    	 ok4=false;
+	    }else{                  
+	        ok4=true;
+	    } 
+	});
+	$('input[name="telphone"]').blur(function(){
+	    if($(this).val().search( /^1+\d{10}$/)==-1){
+	    	$(".tishi").text('请输入正确的电话号码');
+	    	 ok4=false;
+	    }else{                  
+	        ok4=true;
+	    } 
+	});
+
+	var url = location.href;  
+	var paraString = url.indexOf("=");
+	if(paraString != -1){
+		var paraString = url.substring(url.indexOf("=")+1,url.length);	
+		//异步获取主题活动信息
+		$.ajax({
+	        type: "post",
+	        url: getPath()+"/wallActivity/findWallActivityId",
+	        data:{id:paraString},
+	        async: false,
+	        cache:false,
+	        dataType: "json",
+	        success: function (data) {
+	    		if(data.success && data.obj){
+		    		$('.zz_title').html(data.obj.ftheme);
+		    		$('.zz_title').after("<article>"+data.obj.ybasicSocialgroups.fname+"</article>");
+	    		}else{
+	    			$('.zz_center').html("数据读取出错!请重新扫描二维码");
+	    		}
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	        	$('.zz_center').html("读取失败，请重新输入信息");
+	        }
+	    });
+	}else{
+		$('.zz_center').html("不合法的访问!");
+	}
+	$(".zz_center").removeClass('hide');
+	$(".xx_loader").addClass('hide');
+});
+
+function checkForm(){
+	var name = $('#name').val();
+	var ttxx = $('#ttxx').val();
+	var telphone = $('#telphone').val();
+
+	var url = location.href;  
+	var paraString = url.indexOf("=");
+	if(paraString != -1){
+		var paraString = url.substring(url.indexOf("=")+1,url.length);	
+		if(ok4){
+			$.ajax({
+		        type: "post",
+		        url: getPath()+"/wallActivity/getWallActivitypeopleSeatNum",
+		        data:{userName:name,tel:telphone,groupname:ttxx,ztid:paraString},
+		        async: false,
+		        cache:false,
+		        dataType: "json",
+		        success: function (data) {
+		    		$('#getSeat').css({"display":'none'});
+		    		if(data.success && data.seatNum) {
+			    		$('.zwh').html("你的座位号是"+data.seatNum+"号");
+		    		}else{
+		    			$('.zwh').html("还未生成你的座位号，请联系团体负责人");
+		    		}
+		        },
+		        error: function (XMLHttpRequest, textStatus, errorThrown) {
+		        	$('.zwh').html("读取失败，请重新输入信息");
+		        }
+		    });
+		}
+	}else{
+		alert('请按流程步骤完成信息输入！');
+	}
+}
+</script>
+</html>

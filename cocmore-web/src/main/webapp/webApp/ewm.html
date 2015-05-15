@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-关于组织</title>
+	<style type="text/css">
+		.imgEwm{position:absolute;width:100%;height:100%;left:0;top:0;background:url(../static/webApp/img/QR.jpg) #fff no-repeat center center;}
+	</style>
+	</head>
+<body>
+		<div class="imgEwm"></div>
+</body>
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+	<script type="text/javascript">
+		//获取项目路径
+		function getPath(){
+			var curWwwPath=document.location.href;
+		    var pathName=document.location.pathname;
+		    var pos=curWwwPath.indexOf(pathName);
+		    var localhostPaht=curWwwPath.substring(0,pos);
+		    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+		    return(localhostPaht+projectName+'/');
+		}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		$(document).ready(function(){
+			$(".imgEwm").click(function(){
+				location.href=getPath()+"webApp/gyzz.html";
+			});
+		});
+	</script>
+</html>

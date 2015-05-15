@@ -1,0 +1,83 @@
+.common_add {background-image: url(../images/common/common_add.gif) !important;}
+.common_delete {background-image: url(../images/common/common_delete.gif) !important;}
+.common_edit {background-image: url(../images/common/common_edit.gif) !important;}
+.common_search {background-image: url(../images/common/common_search.gif) !important;}
+.common_details {background-image: url(../images/common/common_details.gif) !important;}
+.common_upload {background-image: url(../images/common/common_upload.png) !important;}
+.common_back {background-image: url(../images/common/common_back.png) !important;}
+.common_go {background-image: url(../images/common/common_go.png) !important;}
+.common_list {background-image: url(../images/common/common_list.png) !important;}
+.common_submit {background-image: url(../images/common/common_submit.png) !important;}
+.common_flag {background-image: url(../images/common/common_flag.png) !important;}
+.common_open {background-image: url(../images/common/common_open.png) !important;}
+.common_shutdown {background-image: url(../images/common/common_shutdown.png) !important;}
+.common_down{background-image:url(../images/console/icon/common_down.png) !important}
+.common_top{background-image:url(../images/console/icon/common_top.png) !important}
+.delete {background-image:url(../images/cross.gif) !important;}
+.datalist {background-image:url(../images/lb_img.gif) !important;}
+.reflesh {background-image:url(../images/done.gif) !important;}
+.add {background-image:url(../images/user_add.gif) !important;}
+.edit{background-image:url(../images/cog_edit.png) !important;}
+.save{background-image:url(../images/save.gif) !important;}
+.search{background-image:url(../images/serach.png) !important;}
+.details{background-image:url(../images/details.gif) !important;}
+.qxfp{background-image:url(../images/application_go.png) !important;}
+.check{background-image:url(../images/user_edit.png) !important;}
+.upload-icon{background-image:url(../images/image_add.png) !important;}
+.plug-add{background-image:url(../images/plugin_add.gif) !important;}
+.connect{background-image:url(../images/connect.png) !important;}
+.folder_picture{background-image:url(../images/folder_picture.png) !important;}
+.folder_image{background-image:url(../images/folder_image.png) !important;}
+.add_file{background-image:url(../images/file-add.gif) !important;}
+.delete_file{background-image:url(../images/file-remove.gif) !important;}
+.work_find{background-image:url(../images/work_find.png) !important;}
+.back{background-image:url(../images/door_out.png) !important;}
+.add_marc{background-image:url(../images/application_form_add.png) !important;}
+.delete_marc{background-image:url(../images/application_form_delete.png) !important;}
+.red-row{background-color:#F5C0C0 !important;}
+.yellow-row{background-color:#FBF8BF !important;}
+.green-row{background-color:#99CC99 !important;}
+.group_edit{background-image:url(../images/group_edit.png) !important;}
+.application_go{background-image:url(../images/application_go.png) !important;}
+.input_single{background-image:url(../images/pencil.png) !important;}
+.input_import{background-image:url(../images/page_white_edit.png) !important;}
+.application_go{background-image:url(../images/application_go.png) !important;}
+.res_nocommit{background-image:url(../images/res_minfo/res_nocommit.png) !important;}
+.res_nocheck{background-image:url(../images/common/common_nocheck.png) !important;}
+.res_pass{background-image:url(../images/res_minfo/res_pass.png) !important;}
+.res_nopass{background-image:url(../images/res_minfo/res_nopass.png) !important;}
+.res_dliver{background-image:url(../images/res_minfo/res_deliver.png) !important;}
+.templet_setting{background-image:url(../images/buildings.png) !important;}
+.refresh{background-image:url(../images/refresh.png) !important;}
+.fanyi{background-image:url(../images/icon/fanyi.gif) !important;}
+.view{background-image:url(../images/icon/viewSource.gif) !important;}
+.open{background-image:url(../images/icon/open.gif) !important;}
+.colse{background-image:url(../images/icon/colse.gif) !important;}
+.jieshou{background-image:url(../images/icon/jieshou.png) !important;}
+.jujue{background-image:url(../images/icon/jujue.png) !important;}
+.excel{background-image:url(../images/icon/excel.png) !important;}
+.cancel{background-image:url(../images/icon/cancel.png) !important;}
+.sc_not_solve{background-image:url(../images/sc/sc_not_solve.png) !important;}
+.sc_close{background-image:url(../images/sc/sc_close.png) !important;}
+.sc_solve{background-image:url(../images/sc/sc_solve.png) !important;}
+.main_tab{background-image:url(../images/icon/main_tab.png) !important;}
+.icon_excel{background-image:url(../images/icon/icon_excel.jpg) !important;}
+.icon_download{background-image:url(../images/icon/download.gif) !important;}
+.common_past{background-image: url(../images/common/common_past.png) !important;}
+.common_nopast{background-image: url(../images/common/common_nopast.png) !important;}
+
+.update_cache{background-image: url(../images/icon/update_cache.gif) !important;}
+.common_yes{background-image: url(../images/icon/yes.png) !important;}
+.chachong{background-image: url(../images/icon/web_icon_021.gif) !important;}
+.source_subject{background-image: url(../images/icon/subject.gif) !important;}
+.lajixiang{background-image: url(../images/icon/mbi_009.gif) !important;}
+.tool_more{background-image: url(../images/icon/tool-more.gif) !important;}
+.regedit{background-image: url(../images/icon/regedit.png) !important;}
+
+
+.yunzo_downSearch{background-image: url(../images/common/downSearch.gif) !important;}
+.yunzo_upSearch{background-image: url(../images/common/upSearch.gif) !important;}
+.yunzo_changeEdit{background-image: url(../images/common/changeEdit.gif) !important;}
+.yunzo_startUp{background-image: url(../images/console/icon/common_exit.gif) !important;}
+.yunzo_yhsq{background-image:url(../images/console/usericon.png) !important;}
+.yunzo_save{background-image:url(../images/console/icon/update.png) !important;}

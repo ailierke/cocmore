@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <title>云筑圈 活动抽奖</title>
+    <style type="text/css">
+        *{margin:0px;list-style:none;font-family:'微软雅黑 Verdana';text-decoration: none}
+        body{background:url('../static/choujiang/cj_bg.jpg') repeat-x}
+        a{color:#000}
+        a:hover{color:#ffffff}
+        select{background: none;border: none;height: 72px;width: 225px;font-weight:bold;font-size: 20px;text-align: center;}
+
+        .header{width:100%;height:215px;background:url("../static/choujiang/yunzo.jpg") center}
+        .content{width:100%;height:auto;}
+        .main{width:1000px;margin:0px auto;padding-top:5px;height:490px;}
+        .hiden{display:none}
+
+        .sel{
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            text-shadow: 3px 3px 3px #0B4151;
+            box-shadow: 3px 3px 3px #0B4151;
+            float:left;
+            height: 72px;
+            margin: 0px 50px;
+            overflow: hidden;
+            padding: 0;
+            width: 225px;
+            background: url("../static/choujiang/sel_bg.jpg") repeat-x;
+        }
+        .perItem{
+            width:80px;
+			padding:10px;
+            height:10px;
+			color:black;
+			vertical-align: middle;
+        }
+        .person{
+            padding:30px 160px;
+            float:right;
+            width:636px;
+            height:442px;
+            box-shadow: 2px;
+            border:2px solid #1BB6E6;
+            border-radius: 3px;
+            overflow:auto;
+        }
+        .begin{
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            background: url("../static/choujiang/begin.jpg") no-repeat center;
+            width:225px;
+            height:72px;
+            border:2px;
+            box-shadow: 3px 3px 3px #0B4151;
+            display: inline;
+        }
+		.end{
+			border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            width:65px;
+            height:32px;
+            border:none;background:none;
+		}
+        #showLuckPerson{
+            padding-top: 20px;
+        }
+        #showLuckPerson p{
+            line-height: 30px;
+            margin-top: 5px;
+        }
+        #showLuckPerson b{
+            padding-left: 50px;
+        }
+        #showLuckPerson .phone{
+            padding-left: 60px;
+			width:90px;
+			font-size:20px;
+			line-height:30px;
+			display:inline-block;
+        }
+        #showLuckPerson .commerce{
+            padding-left: 50px;
+        }
+        #showLuckPerson .name{
+            padding-left: 50px;
+        }
+        #superCum{
+            width:600px;
+            padding-left:300px;
+            padding-top:100px;
+            margin:0 auto;
+            height:30px;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 3px 3px 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div id="superCum"></div>
+</div>
+<div class="content">
+    <div class="main">
+        <div id="person" class="person">
+            <div class="sel"><select id="perItem"><option value='' >请选择抽奖项</option></select></div>
+            <input type="button" class="begin" value='&nbsp;&nbsp;&nbsp;&nbsp;' onClick="checkPerson()"/>
+			<input type="button" class="end" value='&nbsp;&nbsp;&nbsp;&nbsp;' onClick="down('person')"/>
+            <div class="hiden" id="showLuckPerson"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="application/javascript" src="../static/jquery/jquery.min.js"></script>
+<script type="text/javascript" language="javascript">
+var geren =[];			//奖项集合
+var peopleS=[];			//签到人员名单集合
+var peopleSbeif = [];
+var T;					//定时器
+var historyLuck = []; 	//中奖人员名单集合  
+var lucks=[];			//每次遍历人员名单中奖记录 临时数组 记录中奖人员索引下标
+var zhidin=[];
+//获取项目路径
+function getPath(){
+	var curWwwPath=document.location.href;
+    var pathName=document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    var localhostPaht=curWwwPath.substring(0,pos);
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht+projectName+'/');
+}
+
+if (window.innerWidth)
+    var winWidth = window.innerWidth;
+else if ((document.body) && (document.body.clientWidth))
+    winWidth = document.body.clientWidth;
+if (winWidth <= 480) {
+    $(".main").remove();
+}
+
+//初始化加载  抽奖所属 的奖项数据 ，人员名单数据
+$(window).load(function () {
+	$(function () {
+        var url = location.href;  
+        paraString = url.indexOf("=");
+        if(paraString != -1){
+        	paraString = url.substring(url.indexOf("=")+1,url.length);
+            $.ajax({
+                type: "post",
+                url: getPath()+"wallActivity/getAllWinAndJoinWallActivitypeople",
+                data:{ztid:paraString},
+                async: false,
+                cache:false,
+                dataType: "json",
+                success: function (data) {
+                    if(data && data.success){
+                    	geren = data.winSetting;		//奖项
+                    	peopleS = data.people;			//签到人员名单
+                    	peopleSbeif = data.people;
+                    	/***********加载奖项***********/
+                    	var option = "<option value='' >请选择抽奖项</option>";
+                    	var perItem = document.getElementById('perItem').options;
+                    	for(var i =0;i<geren.length;i++){
+                    	    option +='<option value="'+geren[i].fawardsPerson+'" >'+geren[i].fawardName+'</option>';
+                    		var newoption = new Option(geren[i].fawardName,geren[i].fawardsPerson);
+                    		perItem.add(newoption);   
+                    		
+                    		//获取默认中奖人员名单
+                    		getZhidin(geren[i].fid,i);
+                    	}
+                    	//将指定中奖人员从抽奖人员名单中剔除
+                        for(var i = 0;i<zhidin.length;i++){
+                        	//奖项对应的中奖名单
+                        	var item = zhidin[i];
+                        	
+                        	for(var k =0 ;k<item.length && null != item && item.length>0;k++){
+	                        	for(var j =0;j<peopleS.length && item[k]!=null && item[k].length>0;j++){
+	                        		if(item[k].tel == peopleS[j].tel){
+	                        			peopleSbeif.splice(j,1);
+	             	                    peopleS.splice(j,1);
+	                        		}
+	                        	}
+                        	}
+                        }
+                    }
+                },error: function (XMLHttpRequest, textStatus, errorThrown) {}
+            });
+        }else{
+            alert("还未设置奖项 ，无法抽奖！！！");return;
+        }
+	});
+	
+});
+
+/*
+ *获取奖项指定人员名单
+ */
+function getZhidin(settingId,index){
+	$.ajax({
+        type: "post",
+        url: getPath()+"joinActivity/findJoinActivityId",
+        data:{settingId:settingId},
+        async: false,
+        cache:false,
+        dataType: "json",
+        success: function (data) {
+        	if(data.success){
+        		zhidin[index] = data.obj;
+        	}
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {}
+    });
+}
+/***********个人点击抽奖***********/
+function checkPerson(){
+    var index = document.getElementById('perItem').selectedIndex;
+    if(index==0){
+    	alert("请先选择奖项 ，再点击抽奖！！！");return;
+    }
+    var count = document.getElementById('perItem').options[index].value;
+    var showLuckPerson = document.getElementById('showLuckPerson');
+    var luck=[];lucks=[];
+    for(var i =0 && count<peopleS.length;i<count;i++){
+        var luckNum = check(peopleS);//不重复的随机索引
+		if(luckNum=="null"){
+			luck +='<p><b class="phone">人员已满!</b></p>';break;
+		}
+        luck +='<p><b class="commerce">'+peopleS[luckNum].groupName+'</b><b class="phone">'+peopleS[luckNum].tel+'</b><b class="name">'+peopleS[luckNum].userName+'</b></p>';
+        lucks[i] = [luckNum,peopleS[luckNum].tel];
+    }
+    peopleS = peopleSbeif.concat();
+    T=setTimeout('checkPerson()',10);
+    $('#showLuckPerson').html(luck);
+    showLuckPerson.style.display='block';
+}
+
+//随机获取人员
+function check(person){
+	var item = oneLuck(person.length); //随机数
+	for(var i =0;i<lucks.length;i++){//判断数组中对应索引是否为中奖
+		if(lucks[i][0]==item){
+			return check(person);
+		}
+	}
+	return (item);
+}
+/*******************随机产生获奖索引********************/
+function oneLuck(length) {
+    return (Math.floor(Math.random()*(length)));
+}
+
+/********************停止抽奖*******************/
+function down(){
+    	clearTimeout(T);
+    	var index = document.getElementById('perItem').selectedIndex;
+        var settingId = geren[index-1].fid;
+        var fdesignatedPerson = geren[index-1].fdesignatedPerson;
+        var count = geren[index-1].fawardsPerson;
+		var termItem = document.getElementById('perItem');
+
+        //获取电话集合
+        var tel=[];
+		
+		//有指定中奖时 读取中奖指定名单电话
+		if(fdesignatedPerson && fdesignatedPerson.length>0 ){
+			var luck="";lucks = [];
+			for(var i =0 && zhidin.length >= count;i<count;i++){
+				var peoson = zhidin[index-1][i];
+				tel[i] = peoson.tel;
+		        luck +='<p><b class="commerce">'+peoson.groupName+'</b><b class="phone">'+peoson.tel+'</b><b class="name">'+peoson.userName+'</b></p>';
+			}
+			$('#showLuckPerson').html(luck);
+		}else{
+			//没有时则读取随机产生的中奖人员电话
+	        for(var i=0;i<lucks.length;i++){
+	        	tel[i] = lucks[i][1];
+	        }
+
+	        //移除参与抽奖人员中已中奖人员
+	        for(var i =0;i<lucks.length;i++){
+	        	for(var j =0;j<peopleS.length;j++){
+	                if(peopleS[j].tel== lucks[i][1]){
+	                    peopleSbeif.splice(lucks[i][0],1);
+	                    peopleS.splice(lucks[i][0],1);
+	                }
+	            }
+	        }
+		}
+        
+        //异步保存中奖人员名单
+        $.ajax({
+            type: "post",
+            url: getPath()+"wallActivity/saveWinActivitypeople",
+            data:{ztid:paraString,tel:tel.toString(),settingId:settingId},
+            async: false,
+            cache:false,
+            dataType: "json",
+            success: function (data) {},
+            error: function (XMLHttpRequest, textStatus, errorThrown) {}
+        });
+
+}
+
+function keypress(e)
+{
+   var currKey=0,CapsLock=0,e=e||event;
+   currKey=e.keyCode||e.which||e.charCode;
+   CapsLock=currKey>=65&&currKey<=90;
+   switch (currKey)
+   {
+   //屏蔽了退格、制表、回车、空格、方向键、删除键
+   case 8: case 9:case 13:case 32:case 37:case 38:case 39:case 40:case 46:
+
+            keyName = ""; break;
+   default :keyName = String.fromCharCode(currKey); break;
+   }
+   //keystring += keyName;
+}
+function keydown(e)
+{
+   var e = e||event;
+   var currKey = e.keyCode||e.which||e.charCode;
+   if ((currKey>7&&currKey<14)||(currKey>31&&currKey<47))
+	down('person');
+}
+//document.onkeypress = keypress;
+document.onkeydown = keydown;
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-关于组织</title>
+	<link href="../static/webApp/gyzz.css" type="text/css" rel="stylesheet"/>
+	</head>
+<body>
+		<!-- <h1>关于我们</h1> -->
+		<div class="zz_center">
+			<img src="../static/webApp/img/bg_logo2.png"/></br>
+			<p>透过移动互联网服务</br>提升商务人士的商业机会</br>提高高端人士的生活品质</p></br></br>
+			<footer>
+				云筑科技&nbsp;&nbsp;版权所有</br>
+				客服:&nbsp;&nbsp;&nbsp;&nbsp;4008 010 090</br>
+				电话:+86 755 2650 3388</br>
+				Copyright © 深圳云筑科技有限公司</br>
+				All Rights Reserved 2013-2015</br></br>
+				各地分支机构</br>
+				北京&nbsp;&nbsp;上海&nbsp;&nbsp;香港&nbsp;&nbsp;广州&nbsp;&nbsp;深圳&nbsp;&nbsp;成都&nbsp;&nbsp;重庆&nbsp;&nbsp;东莞&nbsp;&nbsp;长沙&nbsp;&nbsp;南昌</br>
+				<a href="javascript:void(0)" class="ewm">云筑二维码</a>
+			</footer>
+		</div>
+		<div class="imgEwm hide"></div>
+</body>
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+	<script type="text/javascript">
+		//获取项目路径
+		function getPath(){
+			var curWwwPath=document.location.href;
+		    var pathName=document.location.pathname;
+		    var pos=curWwwPath.indexOf(pathName);
+		    var localhostPaht=curWwwPath.substring(0,pos);
+		    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+		    return(localhostPaht+projectName+'/');
+		}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		$(document).ready(function(){
+			$(".ewm").click(function(){
+				$(".imgEwm").removeClass("hide");
+			});
+			$(".imgEwm").click(function(){
+				$(".imgEwm").addClass("hide");
+			});
+		});
+	</script>
+</html>

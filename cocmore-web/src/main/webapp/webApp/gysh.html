@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <title>云筑圈-关于商会</title>
+	
+</head>
+<body>
+	<div class="ttxx_center"></div>
+</body>
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+<script type="text/javascript">
+	//获取项目路径
+	function getPath(){
+		var curWwwPath=document.location.href;
+	    var pathName=document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName+'/');
+	}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		} 
+		var url = location.href;  
+    	var paraString = url.indexOf("=");
+		if(paraString != -1){
+			var paraString = url.substring(url.indexOf("=")+1,url.length);
+			$.ajax({
+				type: "POST",
+		         url: getPath()+"groups/getByGroupId",
+		         data: "businessId="+paraString,
+		         dataType: "json",
+		         error: function () {alert("数据读取异常!");},
+		         success:function(data) {
+		        	 	$(".ttxx_center").html();
+					}  
+		         }); 
+		}
+		
+	</script>
+</html>

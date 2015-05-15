@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.yunzo.cocmore</groupId>
+		<artifactId>cocmore</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<!-- 直接使用继承父类 -->
+	<!-- <groupId>com.yunzo.cocmore</groupId> -->
+	<!-- <version>0.0.1-SNAPSHOT</version> -->
+	<artifactId>cocmore-utils</artifactId>
+	<name>cocmore-utils</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- 加入fastjson依赖包 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.37</version>
+		</dependency>
+		<!-- 加入POI核心依赖 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.10-beta2</version>
+		</dependency>
+		<!-- 为POI支持Office Open XML -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.10-beta2</version>
+		</dependency>
+		<!-- 支持Word文档的操作 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.10-beta2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.openservices</groupId>
+			<artifactId>aliyun-openservices</artifactId>
+			<version>1.0.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<!-- 声明自己在libs下面加的个推的jar包 -->
+		<dependency>
+			<groupId>org.gexin.base</groupId>
+			<artifactId>base</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>
+			${project.basedir}/libs/gexin-rp-sdk-base-2.0.0.20.jar
+			</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.gexin.http</groupId>
+			<artifactId>http</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>
+			${project.basedir}/libs/gexin-rp-sdk-http-3.0.0.10.jar
+			</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.gexin.template</groupId>
+			<artifactId>template</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>
+			${project.basedir}/libs/gexin-rp-sdk-template-2.0.0.9.jar
+			</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.gexin.jackson</groupId>
+			<artifactId>jackson</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>
+			${project.basedir}/libs/jackson-all-1.8.5.jar
+			</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.gexin.protobuf</groupId>
+			<artifactId>protobuf</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>
+			${project.basedir}/libs/protobuf-java-2.5.0.jar
+			</systemPath>
+		</dependency>
+	</dependencies>
+</project>

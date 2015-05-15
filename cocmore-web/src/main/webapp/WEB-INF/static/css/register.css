@@ -1,0 +1,170 @@
+@CHARSET "UTF-8";
+* { margin:0; padding:0; list-style:none;}
+a{font: normal 12px/14px Geneva,"宋体",Tahoma,sans-serif;text-decoration:none;}
+html, body { 
+	background: url(../images/login/login_bg.jpg) repeat-x;
+	overflow-y: auto;
+	overflow-x: hidden;
+	font:normal 15px "Microsoft YaHei";
+}
+input[type="radio"]{
+	width:30px;
+	display:inline;
+}
+input[type="text"],input[type="file"]{
+	margin:5px;
+	width:231px;
+	padding:5px;
+	display:block;
+	border:1px solid #A3B3C2;
+	border-radius:3px;
+	background:#F4F9FD;
+	display:inline;
+}
+input[type="radio"]{
+	margin:5px;
+	padding:5px;
+}
+select{
+	cursor:pointer;
+	margin:5px;
+	height:30px;
+	width:243px;
+	border:1px solid #A3B3C2;
+	border-radius:3px;
+	background:#F4F9FD;
+}
+input[type='submit']{
+	width:97px;
+	height:41px;
+	background:url(../images/login/login_bt.jpg);
+	border:none;
+	color:#fff;
+	font: 16px/36px 微软雅黑,黑体;
+	font-weight: bold;
+	cursor: pointer;
+	vertical-align: middle;}
+input[type='button']{
+	width:97px;
+	height:41px;
+	margin-left:20px;
+	background:url(../images/login/login_bt.jpg);
+	border:none;
+	color:#fff;
+	font: 16px/36px 微软雅黑,黑体;
+	font-weight: bold;
+	cursor: pointer;
+	vertical-align: middle;}
+
+.hidden{display:none;}		
+#YBasicDistrictFid,#YBasicProvinceFid,#YBasicCityFid,#YBasicCountyFid{
+	width:73px;
+	height:20px;
+	margin:1px;
+}
+.content{
+	width:700px;
+	height:700px;
+	position:absolute;
+	left:50%;
+	margin-top:-350px;
+	margin-left:-340px;
+	top:50%;
+}
+.head{
+	width:100%;
+	height:90px;
+	background: url('../images/login/login.png') no-repeat;
+}
+.main{
+	width:680px;
+	padding: 0 10px;
+	background:#F4F9FD;
+	height:auto;
+	border:1px solid #cdcdcd;
+	border-radius:10px;
+	margin-bottom:20px;
+	padding-bottom:20px;
+	float:left;
+}
+.main h1{
+	line-height:40px;
+	font-weight:normal;
+	font-size:20px;
+	color:#615C59;
+	width:100%;
+	border-bottom:1px solid #DCDCDC;
+	margin-bottom:10px;
+}
+.main>h1>label{
+	color:#2F2D2E;
+	width:390px;
+	color:red;
+	margin-top: 20px;
+	font-size: 14px;
+	float:right;
+	font: normal 12px/14px Geneva,"宋体",Tahoma,sans-serif;
+	vertical-align: middle;
+	padding:0;
+}
+.main p{
+	width:320px;
+	height:40px;
+	line-height:30px;
+	margin:0px 10px;
+	float:left;
+}
+.main label{
+	color:#2F2D2E;
+	width:60px;
+	float:left;
+	font-size: 14px;
+	text-align:right;
+	font: normal 12px/14px Geneva,"宋体",Tahoma,sans-serif;
+	vertical-align: middle;
+	padding-top:10px;
+}
+.main span{
+	color:red;
+	width:5px;
+	float:right;
+	font-size: 14px;
+	text-align:right;
+	font: normal 12px/14px Geneva,"宋体",Tahoma,sans-serif;
+	vertical-align: middle;
+	padding-top:10px;
+}
+#veritycode{
+	border-color: #ccc #ddd #ddd #ccc;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px;
+	color: #333;
+	font-size: 14px;
+	height: 16px;
+	line-height: 16px;
+	outline: medium none;
+	overflow: hidden;
+	padding: 7px 0 7px 8px;
+	resize: none;
+	transition-duration: 0.3s;
+	transition-property: all;
+	vertical-align: middle;
+	width: 95px;}
+#createCheckCode{vertical-align: middle;height:30px;}
+.btn_area{
+	margin-top:20px;
+	width:100%;
+	float:left;
+	text-align:center;
+}
+.signing{
+	width:100%;
+}
+.login_bottom {
+	width:100%;
+	height:30px;
+	line-height: 30px;
+	text-align: center;
+	color: #555;
+}

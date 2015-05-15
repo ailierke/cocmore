@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-座位号</title>
+	<style type="text/css">
+		.state1{
+                color:#aaa;
+                font-size:14px;
+            }
+        .state2{
+            color:#000;
+        }
+        * {
+		    border: medium none;
+		    margin: 0;
+		    padding: 0;
+		    vertical-align: baseline;
+		    font-family: '微软雅黑 Regular', '微软雅黑';
+		    color:#fff;
+		}
+		.hide{
+			display:none;
+		}
+		body{background:#D00202;}
+		h1{
+			width:100%;
+			text-align: center;
+			height: 30px;
+			font-family:'华文行楷';
+		}
+		.zz_center{
+			width:98%;
+			height:100%;
+			padding:1%;
+			text-align:center;
+			padding-top:100px;
+			background:url(../static/webApp/img1/logo.png) no-repeat top center;
+			line-height:30px;
+		}
+		.zz_center img{
+			width:297px;
+			height:100px;
+			position:absolute;
+			bottom:10px;
+			top:5px;
+			left:50%;
+			margin-left:-149px;
+		}
+		.zz_center label{
+			line-height: 40px;
+    		margin-top: 10px;
+    		vertical-align: middle;
+		}
+		.tishi{color:#fff;font-size:14px;}
+		input[type='text']{
+			margin: 10px 5px;
+    		padding: 3px;
+    		width: 200px;
+			background:none;
+			padding:3px;
+			border:none;
+			border-bottom:1px solid #cdcdcd;
+		}
+		input[type='submit']{
+			padding:10px;
+			width:300px;
+			background:none;
+			border:1px solid #fff;
+			border-radius:3px;
+			cursor: pointer;
+			letter-spacing: 10px;
+			font-weight:bold;
+			font-size:16px;
+		}
+		.zz_title{
+			font-family:"Microsoft YaHei","微软雅黑","SimSun","宋体";
+			font-size:20px;
+			line-height:40px;
+			display:block;
+			margin-bottom:20px;
+		}
+		.zz_title h1{
+			font-size:20px;
+		}
+		.zz_title h2{
+			font-size:18px;
+			font-family:'华文行楷';
+		}
+		.seeRules{
+			width:80%;
+			border:1px solid #fff;
+			border-radius:3px;
+			margin:5px 10%;
+			text-align:center;
+			margin-bottom:10px;
+		}
+		.footer{
+			letter-spacing: 10px;
+			height:80px;
+			background:url(../static/webApp/img1/company.png) no-repeat bottom;
+		}
+		@media only screen and (min-width: 481px) and (max-width: 1000px){
+			.zz_title h1{
+				font-size:24px;
+			}
+			.footer h1{
+				font-size:24px;
+			}
+		}
+		.rules,.company{
+			z-index:100;
+			width:100%;
+			height:100%;
+			position:absolute;
+			left:0px;
+			top:0px;
+			background:blue;
+			cursor: pointer;
+		}
+		.rules{
+			/* background:url(../static/webApp/img1/rules-show.png) no-repeat center; */
+		}
+		.company{
+			/* background:url(../static/webApp/img1/company-show.png) no-repeat center; */
+		}
+		.exit{
+			text-align:center;
+			color:#fff;
+			border:1px solid #fff;
+			position:absolute;
+			bottom:10px;
+			left:50%;
+			margin-left:-40px;
+			text-align:center;
+			padding:5px 10px;
+			width:80px;
+			border-radius:3px;
+			cursor: pointer;
+			height:25px;
+		}
+	</style>
+</head>
+<body>
+	<div class="zz_center">
+		<header>
+			<hgroup>
+			<p class="zz_title"></p>
+			</hgroup>
+		</header>
+		<form action="javascript:checkForm();" method="post" id="getSeat">
+			<p class="tishi"></p>
+			<label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input id="name"  type="text"  name="name"  placeholder="姓名(公司名称)"/><br/>
+			<label>团体名称：</label><input type="text" id="ttxx"  name="ttxx"  placeholder="团体名称"/><br/><!-- 
+			<label>联系电话：</label><input   type="text" id="telphone"  name="telphone"/><br/> -->
+			<input type='submit' value="获取座位号"/>
+		</form>
+		<p class="zwh"></p>
+		<div class="seeRules hide">查看节目章程</div>
+		<div class="footer"></div>
+	</div>
+	<div class="rules hide">
+		<span class="exit">取&nbsp;&nbsp;消</span>
+	</div>
+	<div class="company hide">
+		<span class="exit">取&nbsp;&nbsp;消</span>
+	</div>
+</body>
+
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+<script>
+//获取项目路径
+function getPath(){
+	var curWwwPath=document.location.href;
+    var pathName=document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    var localhostPaht=curWwwPath.substring(0,pos);
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht+projectName+'/');
+}
+var ok4 = false;
+$(function(){
+
+	$('.footer').click(function(){
+		$('.company').show(200);
+	});
+
+	
+	$('.exit').click(function(){
+		$('.rules').hide(200);
+		$('.company').hide(200);
+	});
+	//验证姓名
+	$('input[name="name"]').blur(function(){
+	    if($(this).val().trim()==""){
+	    	$(".tishi").text('请输入姓名/公司名称');
+	    	 ok4=false;
+	    }else{   
+	    	$(".tishi").text('');               
+	        ok4=true;
+	    } 
+	});
+	$('input[name="ttxx"]').blur(function(){
+	    if($(this).val().trim()==""){
+	    	$(".tishi").text('请输入团体名称');
+	    	 ok4=false;
+	    }else{     
+	    	$(".tishi").text('');
+	        ok4=true;
+	    } 
+	});
+	/* $('input[name="telphone"]').blur(function(){
+	    if($(this).val().search( /^1+\d{10}$/)==-1){
+	    	$(".tishi").text('请输入正确的电话号码');
+	    	 ok4=false;
+	    }else{                  
+	        ok4=true;
+	    } 
+	}); */
+	var url = location.href;  
+	var paraString = url.indexOf("=");
+	if(paraString != -1){
+		var paraString = url.substring(url.indexOf("=")+1,url.length);	
+		//异步获取主题活动信息
+		$.ajax({
+	        type: "post",
+	        url: getPath()+"/wallActivity/findWallActivityId",
+	        data:{id:paraString},
+	        async: false,
+	        cache:false,
+	        dataType: "json",
+	        success: function (data) {
+	    		if(data.success && data.obj){
+		    		$('.zz_title').html("<h1>"+data.obj.ybasicSocialgroups.fname+"</h1><h2>"+data.obj.ftheme+"</h2>");
+		    		$('.zz_title').after("博商会&nbsp;&nbsp;深圳台商协会&nbsp;&nbsp;东莞台商协会");
+	    		}else{
+	    			$('.zz_center').html("数据读取出错!请重新扫描二维码");
+	    		}
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	        	$('.zz_center').html("读取失败，请重新输入信息");
+	        }
+	    });
+	}else{
+		alert("不合法的访问!");
+	}
+});
+
+function checkForm(){
+	var name = $('#name').val();
+	var ttxx = $('#ttxx').val();
+
+	var url = location.href;  
+	var paraString = url.indexOf("=");
+	if(paraString != -1){
+		var paraString = url.substring(url.indexOf("=")+1,url.length);	
+		if(ok4){
+			$.ajax({
+		        type: "post",
+		        url: getPath()+"/wallActivity/getWallActivitypeopleSeatNum",
+		        data:{userName:name/* ,tel:telphone */,groupname:ttxx,ztid:paraString},
+		        async: false,
+		        cache:false,
+		        dataType: "json",
+		        success: function (data) {
+		    		$('#getSeat').css({"display":'none'});
+		    		if(data.success && data.seatNum){
+			    		$('.zwh').html("恭喜你!签到成功。</br>你的座位号是<strong>"+data.seatNum+"</strong>号");
+		    		}else{
+		    			$('.zwh').html("还未生成你的座位号，请联系团体负责人");
+		    		}
+
+		    		$('.seeRules').removeClass("hide");
+		    		$('.seeRules').click(function(){
+		    			$('.rules').show(200);
+		    		});
+		        },
+		        error: function (XMLHttpRequest, textStatus, errorThrown) {
+		        	$('.zwh').html("读取失败，请重新输入信息");
+		        }
+		    });
+		}else{
+			$(".tishi").text('还未填写信息');
+		}
+	}else{
+		alert('请按流程步骤完成信息输入！');
+	}
+}
+</script>
+</html>

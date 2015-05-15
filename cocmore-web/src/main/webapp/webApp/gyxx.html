@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<link href="../static/webApp/xqxx.css" type="text/css" rel="stylesheet"/>
+	<title>云筑圈-供应详情</title>
+	
+</head>
+<body>
+	<div class="xx_center hide">
+		<p class="shrzIcon hide"></p>
+	  <!--scroll-->
+	  <div class=" xx_img scroll relative">
+	    <div class="scroll_box" id="scroll_img">
+        <ul class="scroll_wrap">
+        </ul>
+	    </div>
+	      <!--<span class="scroll_position_bg opacity6"></span>  -->
+	      <ul class="scroll_position scroll_position_bg" id='scroll_position'>
+	      </ul>
+	  </div>
+	  <!--scroll-->
+		<h1 class="xx_title"></h1>
+		<ul class="xx_db hide">
+		</ul>
+		<p class="xx_contect"><label><a href="tel:13023232"></a></label></p>
+		<ul class="xx_detail">
+				<li></li>
+				<li></li>
+				<li></li>
+		</ul>
+		
+		<p class="publisher"> </p>
+		<div class="xx_desc">
+			<h2></h2>
+			<p></p>
+		</div>
+	</div>
+	<div class="xx_loader"></div>
+</body>
+
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='../static/jquery/imgScroll/hhSwipe.js'></script>
+<script>
+	//获取项目路径
+	function getPath(){
+		var curWwwPath=document.location.href;
+	    var pathName=document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName+'/');
+	}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		function GetQueryString(name) {
+			   var reg = new RegExp("(^|/?|&)" + name + "=([^&]*)(&|$)","i");
+			   var r = decodeURIComponent(location.href).substr(1).match(reg);
+			   if (r!=null) return r[2]; return null;
+		}
+		var paraString = GetQueryString('id');
+		if(paraString && paraString.length>0){
+			$.ajax({
+				type: "POST",// 指定是post还是get,当然此处要提交,当然就要用post了   
+		        url: getPath()+"/supply/findSupplyId",  //发送请求的地址。   
+		        data: {id:paraString},
+		        dataType: "json",//返回纯文本字符串 
+		        timeout:20000,// 设置请求超时时间（毫秒）。   
+		        error: function () {//请求失败时调用函数。  
+		        	 
+		        }, 
+		        success://请求成功后回调函数。  
+		        	function(data) {  
+		        	 	  if(data.success){
+		        	 		  $.ajax({//获取供应的担保数据
+		        				  type: "POST",
+		        			      url: getPath()+"supply/findSAList",  
+		        			      data: {id:paraString},
+		        			      dataType: "json",
+		        			      timeout:20000,
+		        			      error: function () {}, 
+		        			      success:function(data) {  
+        			        	 	  if(data.success){
+        			        	 		  var db="<li class='db_head'>商会担保</li>";
+        			        	 		  var rzIS=false;
+        			        	 		  for(var i =0;i<data.obj.length;i++){
+        			        	 			  var dbxx = data.obj[i];
+        			        	 			  var dbrz = "<li>"+dbxx.ybasicAssurancecontent.fcontent;
+        			        	 			  if(dbxx.ybasicAssurancecontent.ybasicSocialgroups){
+        			        	 				 dbrz +="&nbsp;-&nbsp;"+dbxx.ybasicAssurancecontent.ybasicSocialgroups.fname;
+        			        	 			  }
+        			        	 			  if(dbxx.ispass == 17){
+        			        	 				  continue;
+        			        	 			  }else if(dbxx.ispass == 15){
+        			        	 				 dbrz+="&nbsp;-&nbsp;<font style='color:red'>待认证</font>";
+        			        	 			  }else{
+        			        	 				 if(!rzIS){
+        			        	 					rzIS = true;
+        			        	 				 }
+        			        	 			  }
+        			        	 			  db += dbrz+"</li>";
+        			        	 		  }
+
+    			        	 			  if(rzIS){
+    			        	 				 $(".shrzIcon").removeClass("hide");
+           			        	 		 	 $(".xx_db").html(db);
+        			        	 		  	 $(".xx_db").removeClass("hide");
+    			        	 			  }
+        			        	 	  }
+       			        	 	  }
+        			          });
+		        	 		  var gyxx = data.obj;
+		        	 		  $(".xx_title").html(gyxx.fheadline);
+		        	 		  //图片相关展示
+		        	 		  var img = gyxx.fimages;
+	
+		        	 		  var images="";
+		        	 		  var position ="";
+		        	 		  if(null!=img && img.length>0){
+			        	 		  var imgAarry = img.split(",");
+			        	 		  for(var i = 0;i<imgAarry.length-1;i++){
+			        	 			 if(i==0){
+			        	 				position+='<li class="on"><a href="javascript:void(0);">'+(i+1)+'</a></li>';
+			        	 			 }else{
+				        	 			position+='<li><a href="javascript:void(0);">'+(i+1)+'</a></li>';
+			        	 			 } 
+			        	 			images+='<li><img src="'+imgAarry[i]+'"/></li>';
+			        	 		  }
+		        	 		  }
+		        	 		  $(".scroll_wrap").html(images);
+		        	 		  $("#scroll_position").html(position);
+		        	 		  //发布人信息相关
+		        	 		  var detail = "";
+		        	 		  if(gyxx.ybasicTrade){
+		        	 			  detail+='<li>行业&nbsp;'+gyxx.ybasicTrade.fname+'</li>';
+		        	 		  }
+		        	 		  if(gyxx.ybasicProvince){
+		        	 			  detail+='<li>地址&nbsp;'+gyxx.ybasicProvince.fname;
+		        	 			  if(gyxx.ybasicCity){
+		        	 				  detail += '&nbsp;'+gyxx.ybasicCity.fname;
+		        	 			  }
+	        	 				  if(gyxx.ybasicCounty){
+	        	 					  detail += '&nbsp;'+gyxx.ybasicCounty.fname;
+	        	 				  }
+		        	 			  detail+='</li>';
+		        	 		  }
+		        	 		  if(gyxx.fauditTime){
+		        	 			  detail+='<li>时间&nbsp;'+(gyxx.fauditTime.length>11?gyxx.fauditTime.substr(0,10):gyxx.fauditTime);
+		        	 			  if(gyxx.fexpireTime)
+		        	 				  detail += '&nbsp;至&nbsp;'+(gyxx.fexpireTime.length>11?gyxx.fexpireTime.substr(0,10):gyxx.fexpireTime);
+		        	 			  detail+='</li>';
+		        	 		  }
+		        	 		  $('.xx_detail').html(detail);
+		        	 		  
+		        	 		  //发布人
+		        	 		  if(gyxx.ybasicMember){
+		        	 			 var publisher = '';
+		        	 			 if(gyxx.ybasicMember.fheadImage){
+		        	 				publisher+='<img src="'+gyxx.ybasicMember.fheadImage+'"/>';
+		        	 			 }
+		        	 			 publisher += '发布人&nbsp;&nbsp;'+gyxx.ybasicMember.fname;
+		        	 			 $(".publisher").html(publisher);
+		        	 		  }
+		        	 		  
+		        	 		  $('.xx_desc').html('<h2>供应简介</h2><p>'+gyxx.fmessage+'</p>');
+
+		        	 		var bullets = $('#scroll_position >li');
+	        	 			var slider = Swipe(document.getElementById('scroll_img'), {
+	        	 				auto: 3000,
+	        	 				continuous: true,
+	        	 				callback: function(pos) {
+	        	 					var i = bullets.length;
+	        	 					while (i--) {
+	        	 						bullets[i].className = ' ';
+	        	 					}
+	        	 					bullets[pos].className = 'on';
+	        	 				}
+	        	 			});
+	        	 			$(function(){
+	        	 				$('.scroll_position_bg').css({
+	        	 					width:$('#scroll_position').width()
+	        	 				});
+	        	 			});
+		        	 	  }else{
+		        	 		  $(".xx_title").html("");
+		        	 		  $(".xx_center").html("查询失败");
+		        	 	  }
+
+		        		  $(".xx_center").removeClass('hide');
+		        		  $(".xx_loader").addClass('hide');
+		           	}  
+	          }); 
+		}else{
+			$(".xx_title").html("");
+	 		$(".xx_center").html("查询失败");
+	 		$(".xx_center").removeClass('hide');
+	 		$(".xx_loader").addClass('hide');
+		}
+	</script>
+</html>

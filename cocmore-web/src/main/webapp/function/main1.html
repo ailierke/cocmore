@@ -1,0 +1,142 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>云筑圈管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../static/jquery/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../static/jquery/icon.css">
+	<script type="text/javascript" src="../static/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/jquery/jquery.easyui.min.js"></script>
+  	<style>
+  		.gonggao{color:red;}
+  	</style>
+</head>
+	<body>
+		<h2>Basic Layout</h2>
+		<div class="demo-info">
+			<div class="demo-tip icon-tip"></div>
+			<div>The layout contains north,south,west,east and center regions.</div>
+		</div>
+		<div style="margin:10px 0;"></div>
+		<div class="easyui-layout" style="width:700px;height:350px;">
+			<div data-options="region:'north'" style="height:50px"></div>
+			<div data-options="region:'south',split:true" style="height:50px;"></div>
+			<div data-options="region:'east',split:true" title="East" style="width:180px;"></div>
+			<div data-options="region:'west',split:true" title="West" style="width:180px;">
+				<ul id="tt" class="easyui-tree">   
+				    <li>   
+				        <span>Folder</span>   
+				        <ul>   
+				            <li>   
+				                <span>Sub Folder 1</span>   
+				                <ul>   
+				                    <li>   
+				                        <span><a href="#">File 11</a></span>   
+				                    </li>   
+				                    <li>   
+				                        <span>File 12</span>   
+				                    </li>   
+				                    <li>   
+				                        <span>File 13</span>   
+				                    </li>   
+				                </ul>   
+				            </li>   
+				            <li>   
+				                <span>File 2</span>   
+				            </li>   
+				            <li>   
+				                <span>File 3</span>   
+				            </li>   
+				        </ul>   
+				    </li>   
+				    <li>   
+				        <span>File21</span>   
+				    </li>   
+				</ul> 
+			</div>
+			<div data-options="region:'center',iconCls:'icon-ok'"  id="tabs" class="easyui-tabs" >
+				    <div title="Tab1" style="padding:20px;display:none;">   
+				        
+				    </div>
+			</div>
+		</div>
+	</body>
+	<script>
+	/**选项卡数目**/
+	var tabnum = 0;
+	/**最大存在的选项卡个数**/
+	var num = 10;
+	$(document).ready(function(){
+		$('#mm').menu({    
+		    onClick:function(item){    
+		        alert(item);
+		    }    
+		});  
+		$('#mm').menu('show', {    
+			  left: 200,    
+			  top: 100    
+			});  
+		$('#tt').tree({
+			onClick: function(node){
+				addTab(node.text,'hygl.html');  // 在用户点击的时候提示
+			}
+		});  
+		
+		//查看消息详情
+		function lookDetails(subTitle,mesId){	
+			var url = "message/lookDetails?mesId="+mesId;
+			if(!$("#tabs").tabs("exists",subTitle)){
+				addTab(subTitle,url);
+			} else {$("#tabs").tabs("close",subTitle);  
+					addTab(subTitle,url);
+			}
+			tabClose();
+		}
+		
+		/**添加主内容框选项卡**/
+		function addTab(subTitle,url){
+			if(!$("#tabs").tabs("exists",subTitle)){
+				if(tabnum<num){
+					$("#tabs").tabs("add",{
+						title:subTitle,
+						content:createFrame(url),
+						closable:true,
+						width:$("#mainPanle").width()-10,
+						height:$("#mainPanle").height()-26
+					});
+					tabnum = tabnum + 1;
+				
+				$(".tabs-selected>.tab-close").attr("onClick","'closewin()'");
+				}else{
+					$.messager.alert("提示","打开的内容过多，请先关闭一些内容！");
+				}
+			} else {
+				$("#tabs").tabs("select",subTitle);
+				var t = $("#tabs").tabs("getTab", subTitle);
+				$("#tabs").tabs("update", {
+					tab : t,
+					options : { icon : ""}
+				});
+			}
+			tab = $("#tabs").tabs("tabs");
+			tab.closing = function(){
+			 	var tb = $("#tabs").tabs("getSelected");
+			 	var i = $("#tabs").tabs("getTabIndex",tb);
+			 	$("#tabs").tabs("close",i);
+			};
+			tabClose();
+		}
+	});
+	function createFrame(url){
+		var mainIframe = "<iframe name='mainFrame' scrolling='auto' frameborder='0'  src='"+url+"' style='width:100%;height:100%;'></iframe>";
+		return  mainIframe;
+	}
+	/**双击关闭选项卡**/
+	function tabClose(){
+		$(".tabs-inner").dblclick(function(){
+			var subTitle = $(this).children("span").text();
+			$("#tabs").tabs("close",subTitle);
+		});
+	}
+	</script>
+</html>

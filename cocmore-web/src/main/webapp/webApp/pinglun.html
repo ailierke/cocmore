@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-上墙活动回复</title>
+	<link href="../static/shangqiang/pinglun.css" type="text/css" rel="stylesheet"/>
+	
+</head>
+<body>
+	<div class="xx_center hide">
+		<p class="xx_title">当前活动主题：<label class="seeReply">查看评论</label></p>
+		<select id="theme">
+			<option value="">请选择活动主题</option>
+		</select>
+		<label>请赶紧发表你的想法或意见吧~</label>
+		<textarea rows="5" class="fcontent"></textarea>
+		<p class="fb">发布</p>
+	</div>
+	<div class="xx_loader"></div>
+</body>
+
+	<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+	<script type="text/javascript">
+		var date = new Date(); // 得到系统日期
+		var dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+			+ date.getDate() + " " + date.getHours() + ":"+ date.getMinutes() + ":" + date.getSeconds();
+		//获取项目路径
+		function getPath(){
+			var curWwwPath=document.location.href;
+		    var pathName=document.location.pathname;
+		    var pos=curWwwPath.indexOf(pathName);
+		    var localhostPaht=curWwwPath.substring(0,pos);
+		    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+		    return(localhostPaht+projectName+'/');
+		}
+		function GetQueryString(name) {
+			   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+			   var r = window.location.search.substr(1).match(reg);
+			   if (r!=null) return unescape(r[2]); return null;
+		}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		var groupId = GetQueryString("id");//团体id
+		/*
+		 *通过团体ID查询上墙主题活动
+		 */
+		if(null!=groupId && groupId != ""){
+			$.ajax({
+				type: "POST",
+		        url: getPath()+"wallActivity/findActivityGroupsIdAndState",
+		        data: {groupsId:groupId,state:14},
+		        dataType: "json",
+		        timeout:20000,
+		        error: function () {}, 
+		        success:function(data) {  
+		        		var li = "";
+		        		if(data.success && data.obj){
+		        	 		var theme = document.getElementById("theme").options;
+		        	 		for(var i =0;i<data.obj.length;i++){
+		        	 			var wall = data.obj[i];
+		        	 			var newoption = new Option(wall.ftheme,wall.fid);
+		        	 			theme.add(newoption);
+		        	 		}
+		        	 		$(".fb").click(function(){
+		        	 			var themeId = $("#theme").val();
+		        	 			if(themeId!=""){
+		        	 				saveReply(themeId);
+		        	 			}else{
+		        	 				alert("请先选择活动");
+		        	 			}
+		        	 		});
+		        		}else{
+		        			alert("当前团体没有活动!");
+	        	 	  	}
+
+		        		$(".xx_center").removeClass('hide');
+		        		$(".xx_loader").addClass('hide');
+		        	}
+	        });
+		}else{
+	 		$(".xx_center").html("查询失败");
+			$(".xx_center").removeClass('hide');
+			$(".xx_loader").addClass('hide');
+		}
+		
+
+ 		$(".seeReply").click(function(){
+ 			var themeId = $("theme").val();
+ 			if(null != themeId &&  themeId != undefined && themeId!=""){
+ 				location.href=getPath()+'webApp/shangqiang.html?id='+themeId;return false; 
+ 			}else{
+ 				alert("请先选择活动");
+ 			}
+ 		});
+		//发布 成功则跳转活动页面
+		function saveReply(themeId){
+			var member = GetQueryString("member");
+			var fcontent = $(".fcontent").val();
+			$.ajax({
+				type: "POST",
+		        url: getPath()+"wallReply/addWallReply",
+		        data: {userPhone:member,fcommerceId:groupId,'YWallactivity.fid':themeId,fcontent:fcontent,freplyTime:dateString,fstate:15},
+		        dataType: "json",
+		        timeout:20000,
+		        error: function () {}, 
+		        success:function(data) {  
+		        		if(data.success){
+		        			location.href=getPath()+'webApp/shangqiang.html?id='+themeId;return false; 
+		        		}else{
+		        			alert("信息错误，重新发送!");
+	        	 	  	}	
+		        	}
+	        });
+		}
+		
+	</script>
+</html>

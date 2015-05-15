@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<link href="../static/webApp/xqxx.css" type="text/css" rel="stylesheet"/>
+	<title>云筑圈-需求详情</title>
+</head>
+<body>
+	<div class="xx_center hide">
+	  <!--scroll-->
+	  <div class=" xx_img scroll relative">
+	    <div class="scroll_box" id="scroll_img">
+        <ul class="scroll_wrap"></ul>
+	    </div>
+	      <!--<span class="scroll_position_bg opacity6"></span>  -->
+	      <ul class="scroll_position scroll_position_bg" id='scroll_position'>
+	          <li class="on"><a href="javascript:void(0);">1</a></li>
+	          <li><a href="javascript:void(0);">2</a></li>
+	          <li><a href="javascript:void(0);">3</a></li>
+	      </ul>
+	  </div>
+	  <!--scroll-->
+		
+		<h1 class="xx_title"></h1>
+		<p class="xx_contect"><label></label></p>
+		<ul class="xx_detail">
+				<li></li>
+				<li></li>
+				<li></li>
+		</ul>
+		
+		<p class="publisher"> <img src=""/></p>
+		<div class="xx_desc">
+			<h2></h2>
+			<p></p>
+		</div>
+	</div>
+	<div class="xx_loader"></div>
+</body>
+
+<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='../static/jquery/imgScroll/hhSwipe.js'></script>
+<script>
+	//获取项目路径
+	function getPath(){
+		var curWwwPath=document.location.href;
+	    var pathName=document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName+'/');
+	}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		function GetQueryString(name) {
+			   var reg = new RegExp("(^|/?|&)" + name + "=([^&]*)(&|$)","i");
+			   var r = decodeURIComponent(location.href).substr(1).match(reg);
+			   if (r!=null) return r[2]; return null;
+		}
+		var paraString = GetQueryString('id');
+		if(paraString && paraString.length>0){
+			var paraString = url.substring(url.indexOf("=")+1,url.length);
+			$.ajax({
+				type: "POST",// 指定是post还是get,当然此处要提交,当然就要用post了   
+		        url: getPath()+"/demand/findDemandId",  //发送请求的地址。   
+		        data: {id:paraString},
+		        dataType: "json",//返回纯文本字符串 
+		        timeout:20000,// 设置请求超时时间（毫秒）。   
+		        error: function () {//请求失败时调用函数。  
+		        	 
+		        }, 
+		        success://请求成功后回调函数。  
+		        	function(data) {  
+		        	 	  if(data.success){
+		        	 		  var xqxx = data.obj;
+		        	 		  $(".xx_title").html(xqxx.fheadline);
+		        	 		  //图片相关展示
+		        	 		  var img = xqxx.fimages;
+	
+		        	 		  var images="";
+		        	 		  var position ="";
+
+			        	 		if(img && img.length>0){
+			        	 			if(img.indexOf(",")>0){
+					        	 		  var imgAarry = img.split(",");
+					        	 		  for(var i = 0;i<imgAarry.length-1;i++){
+					        	 			 if(i==0){
+					        	 				position+='<li class="on"><a href="javascript:void(0);">'+(i+1)+'</a></li>';
+					        	 			 }else{
+						        	 			position+='<li><a href="javascript:void(0);">'+(i+1)+'</a></li>';
+					        	 			 } 
+					        	 			images+='<li><img src="'+imgAarry[i]+'"/></li>';
+					        	 		  }
+			        	 		  }else{
+				        	 			$(".xx_time").after("<img src='"+img+"' class='xx_img'/>");
+				        	 		}
+		        	 			}
+		        	 		  $(".scroll_wrap").html(images);
+		        	 		  $("#scroll_position").html(position);
+		        	 		  //联系人
+		        	 		  if(xqxx.fcontacts){
+		        	 			 var contect='<p class="xx_contect">联系人&nbsp;&nbsp;'+xqxx.fcontacts+'';
+		        	 			 if(xqxx.ftel){
+		        	 				contect += '<label><a href="tel:'+xqxx.ftel+'">'+xqxx.ftel+'</a></label>';
+		        	 			 }
+		        	 			 contect += '</p>';
+		        	 			 $('contect').html(contect);
+		        	 		  }
+		        	 		  //发布人信息相关
+		        	 		  var detail = "";
+		        	 		  if(xqxx.ybasicTrade){
+		        	 			  detail+='<li>行业&nbsp;'+xqxx.ybasicTrade.fname+'</li>';
+		        	 		  }
+		        	 		  if(xqxx.ybasicProvince){
+		        	 			  detail+='<li>地域&nbsp;'+xqxx.ybasicProvince.fname;
+		        	 			  if(xqxx.ybasicCity){
+		        	 				  detail += '&nbsp;'+xqxx.ybasicCity.fname;
+		        	 			  }
+	        	 				  if(xqxx.ybasicCounty){
+	        	 					  detail += '&nbsp;'+xqxx.ybasicCounty.fname;
+	        	 				  }
+		        	 			  detail+='</li>';
+		        	 		  }
+		        	 		  if(xqxx.fauditTime){
+		        	 			  detail+='<li>时间&nbsp;'+(xqxx.fstartTime.length>11?xqxx.fstartTime.substr(0,10):xqxx.fstartTime);
+		        	 			  if(xqxx.fexpireTime)
+		        	 				  detail += '&nbsp;至&nbsp;'+(xqxx.ffinishTime.length>11?xqxx.ffinishTime.substr(0,10):xqxx.ffinishTime);
+		        	 			  detail+='</li>';
+		        	 		  }
+		        	 		  //发布人
+		        	 		  if(xqxx.ybasicMember){
+		        	 			 var publisher = '';
+		        	 			 if(xqxx.ybasicMember.fheadImage){
+		        	 				publisher+='<img src="'+xqxx.ybasicMember.fheadImage+'"/>';
+		        	 			 }
+		        	 			 publisher += '发布人&nbsp;&nbsp;'+xqxx.ybasicMember.fname;
+		        	 			 $(".publisher").html(publisher);
+		        	 		  }
+		        	 		  
+		        	 		  $('.xx_detail').html(detail);
+		        	 		  $('.xx_desc').html('<h2>需求简介</h2><p>'+xqxx.fmessage+'</p>');
+
+		        	 		var bullets = $('#scroll_position >li');
+	        	 			Swipe(document.getElementById('scroll_img'), {
+	        	 				auto: 3000,
+	        	 				continuous: true,
+	        	 				callback: function(pos) {
+	        	 					var i = bullets.length;
+	        	 					while (i--) {
+	        	 						bullets[i].className = ' ';
+	        	 					}
+	        	 					bullets[pos].className = 'on';
+	        	 				}
+	        	 			});
+	        	 			$(function(){
+	        	 				$('.scroll_position_bg').css({
+	        	 					width:$('#scroll_position').width()
+	        	 				});
+	        	 			});
+		        	 	}else{
+		        	 		  $(".xx_title").html("");
+		        	 		  $(".xx_center").html("查询失败");
+		        	 	}
+		        		$(".xx_center").removeClass('hide');
+		        		$(".xx_loader").addClass('hide');
+		           	}  
+	          }); 
+		}else{
+			$(".xx_title").html("");
+	 		$(".xx_center").html("查询失败");
+			$(".xx_center").removeClass('hide');
+			$(".xx_loader").addClass('hide');
+		}
+	</script>
+</html>

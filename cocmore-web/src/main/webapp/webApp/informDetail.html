@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<title>云筑圈-团体通知详情</title>
+	<link href="../static/webApp/shhdxq.css" type="text/css" rel="stylesheet"/>
+	<style type="text/css">
+		.xx_time{text-align:left;color:#D0D0D0;}
+	</style>
+	</head>
+<body>
+	<div class="xx_center hide">
+		<h1 class="xx_title"></h1>
+		<p class="xx_time"><label></label></p>
+		<div class="xx_detail"></div>
+	</div>
+	<div class="xx_loader"></div>
+</body>
+	<script src='../static/jquery/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+	<script type="text/javascript">
+		//获取项目路径
+		function getPath(){
+			var curWwwPath=document.location.href;
+		    var pathName=document.location.pathname;
+		    var pos=curWwwPath.indexOf(pathName);
+		    var localhostPaht=curWwwPath.substring(0,pos);
+		    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+		    return(localhostPaht+projectName+'/');
+		}
+		if (window.PIE) {
+		    $('.rounded').each(function() {
+		        PIE.attach(this);
+		    });
+		}
+		function GetQueryString(name) {
+			   var reg = new RegExp("(^|/?|&)" + name + "=([^&]*)(&|$)","i");
+			   var r = decodeURIComponent(location.href).substr(1).match(reg);
+			   if (r!=null) return r[2]; return null;
+		}
+		var paraString = GetQueryString('id');
+		if(paraString && paraString.length>0){
+			$.ajax({
+				type: "POST",// 指定是post还是get,当然此处要提交,当然就要用post了   
+		        url: getPath()+"groupsInform/findInform",  //发送请求的地址。   
+		        data: {fid:paraString},
+		        dataType: "json",//返回纯文本字符串 
+		        timeout:20000,// 设置请求超时时间（毫秒）。   
+		        error: function () {//请求失败时调用函数。  
+		        	 
+		        }, 
+		        success://请求成功后回调函数。  
+		        	function(data) {  
+		        		if(data.success){
+		        	 		var hdxq = data.object;
+				        	$(".xx_title").html(hdxq.fheadline);
+				        	//图片相关展示
+		        	 		var img = hdxq.flogoImage;
+	
+		        	 		var images="";
+		        	 		var position ="";
+		        	 		if(img && img.length>0){
+			        	 		if(img.indexOf(",")>0){
+				        	 		  var imgAarry = img.split(",");
+				        	 		  for(var i = 0;i<imgAarry.length;i++){
+					        	 		  if(imgAarry[i].length>0 && imgAarry[i] != ""){
+					        	 				$(".xx_time").after("<img src='"+imgAarry[i]+"' class='xx_img'/>");
+					        	 		  }
+					        	 	  }
+		        	 		  	}else{
+			        	 			$(".xx_time").after("<img src='"+img+"' class='xx_img'/>");
+			        	 		}
+	        	 			}
+		        	 		  if(hdxq.fstartTime){
+		        	 			  var detail=(hdxq.fstartTime.length>11?hdxq.fstartTime.substr(0,10):hdxq.fstartTime);
+		        	 			  if(hdxq.ffinishTime)
+		        	 				  detail += '&nbsp;至&nbsp;'+(hdxq.ffinishTime.length>11?hdxq.ffinishTime.substr(0,10):hdxq.ffinishTime);
+		        	 			  if(hdxq.fparticipationNum && hdxq.fparticipationNum>0){
+	        	 				  	detail += "<label>("+hdxq.fparticipationNum+"人已参加)</label>";
+	        	 				  }
+			        	 		  $(".xx_time").html(detail);
+		        	 		  }
+		        	 		  $('.xx_detail').html(hdxq.fmessage.replace(/width:/g,"").replace(/text-indent:/g,"").replace(/margin/g,"").replace(/line-height/g,"").replace(/font-size/g,"").replace(/width=/g,"").replace(/[W]IDTH:/g,""));
+        	 			}else{
+		        	 		  $(".xx_title").html("");
+		        	 		  $(".xx_center").html("查询失败");
+	        	 	  	}	
+		        		$(".xx_center").removeClass('hide');
+		        		$(".xx_loader").addClass('hide');
+		        	}
+	        });
+		}else{
+			$(".xx_title").html("");
+	 		$(".xx_center").html("查询失败");
+			$(".xx_center").removeClass('hide');
+			$(".xx_loader").addClass('hide');
+		}
+	</script>
+
+</html>
