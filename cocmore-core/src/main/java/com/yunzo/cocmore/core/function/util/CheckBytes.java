@@ -35,14 +35,15 @@ public class CheckBytes {
 	}
 
 	public static void main(String[] args) throws UnsupportedEncodingException { // 原始字符串
-		String s = "测1是ww";
-		System.out.println("原始字符串：" + s);
+//		String s = "测1是ww";
+//		System.out.println("原始字符串：" + s);
 		try {
-			System.out.println("截取前1位：" + CheckBytes.substring(s, 12));
+			System.out.println(isChineseChar('你'));
+//			System.out.println("截取前1位：" + CheckBytes.substring(s, 12));
 //			System.out.println("截取前2位：" + CheckBytes.substring(s, 2));
 //			System.out.println("截取前4位：" + CheckBytes.substring(s, 4));
 //			System.out.println("截取前6位：" + CheckBytes.substring(s, 5));
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

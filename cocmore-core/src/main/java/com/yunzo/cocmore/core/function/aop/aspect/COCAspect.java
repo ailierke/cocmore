@@ -13,8 +13,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.DeclareParents;
 
-import com.yunzo.cocmore.core.function.service.UserDeclareParentsService;
-import com.yunzo.cocmore.core.function.service.impl.UserDeclareParentsServiceImpl;
 
 
 // 声明这是一个切面Bean
@@ -135,12 +133,4 @@ public class COCAspect {
 		}
 	}
 	
-	/**
-	 * @Fields declareParents : TODO(为web.function.service.
-	 *         DemoService接口的所有实现类织入DemoDeclareParentsServiceImpl实现类的功能)
-	 *         value：拦截切入点 defaultImpl：默认的实现类 声明的对象declareParents是要实现的接口
-	 *         使用时可以通过强制类型转换将 DemoService 强制转换成DemoDeclareParentsService
-	 */
-	@DeclareParents(value = "com.yunzo.cocmore.core.function.service.DemoService+", defaultImpl = UserDeclareParentsServiceImpl.class)
-	public static UserDeclareParentsService declareParents;
 }

@@ -15,7 +15,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yunzo.cocmore.core.function.service.MemberServiceI;
 import com.yunzo.cocmore.core.function.util.ResponseCode;
 import com.yunzo.cocmore.utils.base.YunzoCocSignCode;
 
@@ -32,8 +31,6 @@ import com.yunzo.cocmore.utils.base.YunzoCocSignCode;
 public class COC_CheckSign extends HandlerInterceptorAdapter {
 	Logger logger = Logger.getLogger(COC_CheckSign.class);
 	private ObjectMapper objectMapper = new ObjectMapper();
-	@Resource
-	MemberServiceI memberService;
 
 	@Override
 	/**
@@ -53,7 +50,7 @@ public class COC_CheckSign extends HandlerInterceptorAdapter {
 			tel = node.get("userName") == null ? null : node.get("userName").textValue();// 电话号码
 			md5info = node.get("md5Info") == null ? null : node.get("md5Info").textValue();// 登录时返回的临时密码
 			if (tel != null) {
-				if (memberService.checkAppUserLogin(tel, md5info)) {// 判断用户是否登录
+//				if (memberService.checkAppUserLogin(tel, md5info)) {// 判断用户是否登录
 					String tvalue = checkObjectIsNull(node);
 					if(tvalue.equals(""))
 					{
@@ -68,12 +65,12 @@ public class COC_CheckSign extends HandlerInterceptorAdapter {
 						flag=false;
 						results+=tvalue;
 					}
-				} else {
-					map.put(ResponseCode.MSGC.msg(), ResponseCode.VALIDATEFAILER.value());
-					map.put(ResponseCode.MSGM.msg(), ResponseCode.VALIDATEFAILER.msg());
-					COC_APPResponseResult.responseToGJson(map, response);
-					return false;
-				}
+//				} else {
+//					map.put(ResponseCode.MSGC.msg(), ResponseCode.VALIDATEFAILER.value());
+//					map.put(ResponseCode.MSGM.msg(), ResponseCode.VALIDATEFAILER.msg());
+//					COC_APPResponseResult.responseToGJson(map, response);
+//					return false;
+//				}
 
 			} else {
 				// 转码参数

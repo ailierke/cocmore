@@ -17,11 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.yunzo.cocmore.core.function.model.mysql.YBasicMember;
-import com.yunzo.cocmore.core.function.model.mysql.YSystemUsers;
-import com.yunzo.cocmore.core.function.model.mysql.YSystemconfigurationLog;
-import com.yunzo.cocmore.core.function.service.GetNumberService;
-import com.yunzo.cocmore.core.function.service.LogServiceI;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,12 +36,8 @@ public class COCTOAspect {
 	// 本地异常日志记录对象
 	private static final Logger logger = Logger.getLogger(COCTOAspect.class);
 
-	private YSystemconfigurationLog log;
+//	private YSystemconfigurationLog log;
 	// 注入Service用于把日志保存数据库
-	@Resource
-	 private LogServiceI logService;
-	@Resource
-	private GetNumberService getNumberService;
 	
 	// Service层切点
 	@Pointcut("@annotation(com.yunzo.cocmore.core.function.aop.aspect.SystemServiceLog)")
@@ -72,31 +63,30 @@ public class COCTOAspect {
 				.getRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
 		// 读取session中的用户
-		 YSystemUsers user = (YSystemUsers) session.getAttribute("user");
-		 YBasicMember member = (YBasicMember) session.getAttribute("member");
+//		 YSystemUsers user = (YSystemUsers) session.getAttribute("user");
+//		 YBasicMember member = (YBasicMember) session.getAttribute("member");
 		// 请求的IP
 		String ip = request.getRemoteAddr();
 		try {
 			// *========数据库日志=========*//
-			Map<String,Object> map= getNumberService.checkExist("XT-RZGL");
-			log=new YSystemconfigurationLog();
-			log.setFid(UUID.randomUUID().toString());
-			log.setFnumber((String)map.get("serialNumber"));
-			if(user != null){
-				log.setFuserId(user.getFaccount());
-			}
-			if(member != null){
-				log.setFuserId(member.getFmobilePhone());
-			}
-			log.setFtype(0);
-			log.setFtime(new Date());
-			log.setFcontent(getControllerMethodDescription(joinPoint));
-			log.setFip(ip);
-			log.setFremark((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
+//			log=new YSystemconfigurationLog();
+//			log.setFid(UUID.randomUUID().toString());
+//			log.setFnumber((String)map.get("serialNumber"));
+//			if(user != null){
+//				log.setFuserId(user.getFaccount());
+//			}
+//			if(member != null){
+//				log.setFuserId(member.getFmobilePhone());
+//			}
+//			log.setFtype(0);
+//			log.setFtime(new Date());
+//			log.setFcontent(getControllerMethodDescription(joinPoint));
+//			log.setFip(ip);
+//			log.setFremark((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
 			
 			// 保存数据库
-			logService.save(log);
-			getNumberService.addSerialNumber("XT-RZGL");
+//			logService.save(log);
+//			getNumberService.addSerialNumber("XT-RZGL");
 		} catch (Exception e) {
 			 //记录本地异常日志  
             logger.error("==前置通知异常==");  
@@ -116,40 +106,40 @@ public class COCTOAspect {
 				.getRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
 		// 读取session中的用户
-		 YSystemUsers user = (YSystemUsers) session.getAttribute("user");
-		 YBasicMember member = (YBasicMember) session.getAttribute("member");
+//		 YSystemUsers user = (YSystemUsers) session.getAttribute("user");
+//		 YBasicMember member = (YBasicMember) session.getAttribute("member");
 		// 获取请求ip
 		String ip = request.getRemoteAddr();
 
 		try {
 			/* ==========数据库日志========= */
-			Map<String,Object> map= getNumberService.checkExist("XT-RZGL");
-			log=new YSystemconfigurationLog();
-			log.setFid(UUID.randomUUID().toString());
-			log.setFnumber((String)map.get("serialNumber"));
-			if(user != null){
-				log.setFuserId(user.getFaccount());
-			}
-			if(member != null){
-				log.setFuserId(member.getFmobilePhone());
-			}
-			log.setFtype(1);
-			log.setFtime(new Date());
-			log.setFcontent(getServiceMthodDescription(joinPoint));
-			log.setFip(ip);
-			log.setFremark((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
+//			Map<String,Object> map= getNumberService.checkExist("XT-RZGL");
+//			log=new YSystemconfigurationLog();
+//			log.setFid(UUID.randomUUID().toString());
+//			log.setFnumber((String)map.get("serialNumber"));
+//			if(user != null){
+//				log.setFuserId(user.getFaccount());
+//			}
+//			if(member != null){
+//				log.setFuserId(member.getFmobilePhone());
+//			}
+//			log.setFtype(1);
+//			log.setFtime(new Date());
+//			log.setFcontent(getServiceMthodDescription(joinPoint));
+//			log.setFip(ip);
+//			log.setFremark((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
 			
 			// 保存数据库
-			logService.save(log);
-			getNumberService.addSerialNumber("XT-RZGL");
+//			logService.save(log);
+//			getNumberService.addSerialNumber("XT-RZGL");
 			
-			log=new YSystemconfigurationLog();
-			log.setFid(UUID.randomUUID().toString());
-			log.setFcontent(getControllerMethodDescription(joinPoint));
-			log.setFip(ip);
+//			log=new YSystemconfigurationLog();
+//			log.setFid(UUID.randomUUID().toString());
+//			log.setFcontent(getControllerMethodDescription(joinPoint));
+//			log.setFip(ip);
 			
 			// 保存数据库
-			logService.save(log);
+//			logService.save(log);
 			System.out.println("=====异常通知结束=====");
 		} catch (Exception ex) {
 			// 记录本地异常日志
