@@ -50,12 +50,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		
+
 		<!-- 单元测试 spring-test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -77,31 +72,19 @@
 			<version>0.9.1</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.3.5.Final</version>
-		</dependency>
 		<!-- JSR-303验证标准框架的实现 -->
-		<!-- 依赖 validation-api-1.0.0.GA.jar-->
+		<!-- 依赖 validation-api-1.0.0.GA.jar -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.0.2.Final</version>
 		</dependency>
-		
+
 		<!-- 数据源 -->
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>4.3.5.Final</version>
 		</dependency>
 
 		<!-- aop aspectj -->
@@ -148,6 +131,17 @@
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
 			<version>2.6.9</version>
+		</dependency>
+		<!-- mybatis支持 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 
 	</dependencies>
