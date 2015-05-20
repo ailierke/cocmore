@@ -69,44 +69,27 @@
                   获取连接失败后该数据源将申明已断开并永久关闭。Default: false
             -->
              <property name="breakAfterAcquireFailure" value="false" />
-       </bean> 
-       
-       
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+       </bean>
+
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSourcec3p0" />
-		<property name="packagesToScan">
-			<list>
-				<value>com.yunzo.cocmore.core.function.**.model.mysql</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect"> ${hibernate.dialect} </prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-				<!-- <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
-				<!-- 交给spring管理 -->
-				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
-				<!-- 默认不开启二级缓存 -->
-				 <prop key="hibernate.cache.use_second_level_cache">false</prop>
-				 
-				<!--  <prop key="hibernate.cache.use_query_cache">true</prop> -->
-				 <!-- 使用cp30提供数据库连接池 新版本中有所变化向hibernate提供jdbc链接、使用过datasource的方式就不要用下面的provider-->
-				 <!-- <prop key="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</prop> -->
-			</props>
-		</property>
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath*:config/mapping/*.xml"></property>
 	</bean>
 
-	
-	<!-- hibernateDAO -->
-	<bean id="hibernateDAO" class="com.yunzo.cocmore.core.dao.hibernate.impl.COC_HibernateDAOImpl">
-	  <property name="sessionFactory" ref="sessionFactory"></property>
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.cn.hnust.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<!-- 启用事务注解功能  proxy-target-class基于CGLIB类代理 -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	
