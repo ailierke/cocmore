@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 /**
  * ailierke1111111
- * JSON 转换格式 
+ * JSON 转换格式
  * @author david
  *
  */
